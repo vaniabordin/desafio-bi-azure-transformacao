@@ -11,7 +11,7 @@ Linguagem de Consulta: SQL e Linguagem M (Power Query)
 
 🚀 Adaptações de Infraestrutura
 Diferente da proposta original que sugeria o uso do Azure, utilizei o Clever Cloud como provedor de banco de dados MySQL.
-![Configuração de Conexão](configuracao.png)
+![Configuração de Conexão](configuração.png)
 
 Motivação: Devido a limitações de acesso na conta de estudante (ausência de cartão de crédito para validação), o Clever Cloud foi a alternativa gratuita escolhida para garantir a execução do desafio.
 
