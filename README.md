@@ -1,6 +1,6 @@
 Desafio de Projeto: Processamento de Dados Simplificado com Power BI
 📝 Descrição do Projeto
-Este projeto consistiu na integração, extração e transformação de uma base de dados MySQL de um cenário de e-commerce e RH. O objetivo foi aplicar técnicas de limpeza e modelagem de dados para gerar insights sobre a estrutura organizacional da empresa.
+Este projeto consistiu na integração, extração e transformação de uma base de dados MySQL de um cenário de e-commerce e RH. O objetivo foi aplicar técnicas de limpeza e modelagem de dados para gerar insights sobre a estrutura organizacional da empresa, focando na relação entre colaboradores e gerentes.
 
 🛠️ Tecnologias Utilizadas
 Banco de Dados: MySQL (Hospedado no Clever Cloud)
@@ -11,38 +11,39 @@ Linguagem de Consulta: SQL e Linguagem M (Power Query)
 
 🚀 Adaptações de Infraestrutura
 Diferente da proposta original que sugeria o uso do Azure, utilizei o Clever Cloud como provedor de banco de dados MySQL.
+![Configuração de Conexão](configuracao.png)
 
-Motivação: Devido a limitações de acesso na conta de estudante (ausência de cartão de crédito para validação), o Clever Cloud foi a alternativa gratuita escolhida para manter a integridade do desafio.
+Motivação: Devido a limitações de acesso na conta de estudante (ausência de cartão de crédito para validação), o Clever Cloud foi a alternativa gratuita escolhida para garantir a execução do desafio.
 
-Solução de Erros: O servidor apresentava limite de 5 conexões simultâneas (max_user_connections). Para solucionar, configurei o Power BI para desabilitar o carregamento paralelo de tabelas, garantindo a estabilidade da atualização dos dados.
+Solução de Erros de Conexão: O servidor apresentava um limite de 5 conexões simultâneas (max_user_connections), o que causava falhas no carregamento inicial. Para solucionar, configurei o Power BI para desabilitar o carregamento paralelo de tabelas, forçando o sistema a carregar uma tabela por vez e garantindo a estabilidade da atualização.
 
-Configuração realizada para contornar o limite de conexões simultâneas do servidor.
+Configuração de carregamento de dados ajustada para respeitar os limites do servidor.
 
 ⚙️ Etapas de Transformação de Dados
-Seguindo as diretrizes do desafio, realizei as seguintes ações no Power Query:
+No Power Query, realizei as seguintes transformações para garantir a qualidade dos dados:
 
-Cabeçalhos e Tipos: Ajuste de tipos de dados para colunas monetárias e numéricas.
+Cabeçalhos e Tipos: Ajuste manual de tipos de dados e promoção de cabeçalhos.
 
-Tratamento de Nulos: Análise de valores nulos em Super_ssn para identificação de gerentes.
+Tratamento de Nulos: Identificação de colaboradores sem gerente através da coluna Super_ssn.
 
-Divisão de Colunas: Separação da coluna de endereço para melhor granularidade (Logradouro, Número).
+Divisão de Colunas: Separação da coluna de endereço para facilitar análises geográficas futuras (Logradouro e Número).
 
-Mesclagem de Consultas: * Junção de employee e departament para associar colaboradores aos seus respectivos departamentos.
+Mesclagem de Consultas: * Junção de employee e departament para associar cada colaborador ao seu departamento.
 
-Junção de nomes de departamentos e localizações para criar combinações únicas.
+Junção de departamentos e localizações para criar nomes únicos de locais.
 
-Criação de Colunas: Mesclagem de nomes e sobrenomes para criação da coluna Nome_Completo.
+Criação de Colunas: Uso da função de mesclagem para criar a coluna Nome_Completo combinando prenome e sobrenome.
 
-Agrupamento: Criação da tabela Colaboradores_por_Gerente para análise quantitativa de liderança.
+Agrupamento e Otimização: * Criação da tabela Colaboradores_por_Gerente para contagem quantitativa de liderados.
+![Otimização no Power Query](tabelas.png)
 
-Otimização de Modelo: Desabilitação da carga de tabelas auxiliares para o modelo de dados final, mantendo-as apenas no Power Query (identificadas pelo nome em itálico).
+Otimização de Performance: Desabilitei a carga (Load) das tabelas auxiliares para o modelo de dados, mantendo-as apenas como consultas no Power Query (indicado pelos nomes em itálico na lista de consultas).
 
-Visualização das consultas organizadas e otimizadas no Power Query.
+Consultas otimizadas com carga desabilitada para melhorar o desempenho do modelo.
 
-💡 Por que usar 'Mesclar' e não 'Atribuir'?
-Na diretriz 14, foi necessário explicar a escolha técnica. Utilize o Mesclar pois o objetivo era realizar um Join (extensão horizontal), trazendo colunas de uma tabela para outra com base em uma chave comum. O Atribuir (Append) seria usado apenas se fôssemos empilhar linhas (extensão vertical) de tabelas com a mesma estrutura.
+💡 Justificativa Técnica: Mesclar vs. Atribuir
+Conforme solicitado na Diretriz 14, utilizei a operação de Mesclar (Merge). A escolha justifica-se pela necessidade de realizar um Join horizontal para enriquecer a tabela de funcionários com informações de outras tabelas (como nomes de departamentos) através de chaves estrangeiras. A operação de Atribuir (Append) não seria adequada, pois ela serve para empilhar registros verticalmente em tabelas de mesma estrutura, o que não era o caso desta modelagem.
 
 📊 Visualização Final
-O gráfico abaixo demonstra a distribuição de colaboradores por gerente, validando o tratamento de dados e a correta relação entre as entidades do banco.
-
-👨‍💻 Desenvolvido por Vânia Bordin
+O relatório final apresenta a distribuição de colaboradores sob a responsabilidade de cada gerente, permitindo uma análise rápida da estrutura de liderança da organização.
+![Distribuição de Colaboradores por Gerente](Grafico.png)
